@@ -1,15 +1,30 @@
+let quotes = [];
+
+// Elements
+const $quoteContainer = document.getElementById("quote-contaienr");
+const $quoteText = document.getElementById("quote");
+const $authorText = document.getElementById("author");
+const $twitterBtn = document.getElementById("twitter");
+const $newQuoteBtn = document.getElementById("new-quote");
+
+// Show New Quote
+function newQuote() {
+  // Pick a random quote from 'quotes' array
+  const quote = quotes[Math.floor(Math.random() * quotes.length)];
+  return quote;
+}
+
 // Get Quote from API
 async function getQuote() {
-  const proxyUrl = "https://cors-anywhere.herokuapp.com/";
-  const apiUrl =
-    "http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json";
   try {
-    const response = await fetch(proxyUrl + apiUrl);
-    const data = await response.json();
-    console.log(data);
+    const apiUrl = "https://type.fit/api/quotes";
+    const response = await fetch(apiUrl);
+    quotes = await response.json();
+    const randomQuote = newQuote();
+    $authorText.innerText = randomQuote.author;
+    $quoteText.innerText = randomQuote.text;
   } catch (error) {
-    getQuote();
-    console.log("whoops, no quote", error);
+    console.log(error);
   }
 }
 
