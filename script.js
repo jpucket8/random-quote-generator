@@ -1,15 +1,30 @@
 let quotes = [];
 
 // Elements
-const $quoteContainer = document.getElementById("quote-contaienr");
+const $quoteContainer = document.getElementById("quote-container");
 const $quoteText = document.getElementById("quote");
 const $authorText = document.getElementById("author");
 const $twitterBtn = document.getElementById("twitter");
 const $newQuoteBtn = document.getElementById("new-quote");
+const $loader = document.getElementById("loader");
 
 // Event Listeners
 $newQuoteBtn.addEventListener("click", getQuote);
 $twitterBtn.addEventListener("click", tweetQuote);
+
+// Show Loading
+function loading() {
+  $loader.hidden = false;
+  $quoteContainer.hidden = true;
+}
+
+// Hide Loading
+function completed() {
+  if (!$loader.hidden) {
+    $quoteContainer.hidden = false;
+    $loader.hidden = true;
+  }
+}
 
 // Show New Quote
 function newQuote() {
@@ -21,6 +36,7 @@ function newQuote() {
 // Get Quote from API
 async function getQuote() {
   try {
+    loading();
     const apiUrl = "https://type.fit/api/quotes";
     const response = await fetch(apiUrl);
     quotes = await response.json();
@@ -34,6 +50,9 @@ async function getQuote() {
     } else {
       $quoteText.classList.remove("long-quote");
     }
+
+    // Stop Loader, Show Quote
+    completed();
   } catch (error) {
     console.log(error);
   }
