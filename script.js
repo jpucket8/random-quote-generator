@@ -12,14 +12,13 @@ const $loader = document.getElementById("loader");
 $newQuoteBtn.addEventListener("click", getQuote);
 $twitterBtn.addEventListener("click", tweetQuote);
 
-// Show Loading
-function loading() {
+function showLoadingSpinner() {
   $loader.hidden = false;
   $quoteContainer.hidden = true;
 }
 
 // Hide Loading
-function completed() {
+function removeLoadingSpinner() {
   if (!$loader.hidden) {
     $quoteContainer.hidden = false;
     $loader.hidden = true;
@@ -36,7 +35,7 @@ function newQuote() {
 // Get Quote from API
 async function getQuote() {
   try {
-    loading();
+    showLoadingSpinner();
     const apiUrl = "https://type.fit/api/quotes";
     const response = await fetch(apiUrl);
     quotes = await response.json();
@@ -52,7 +51,7 @@ async function getQuote() {
     }
 
     // Stop Loader, Show Quote
-    completed();
+    removeLoadingSpinner();
   } catch (error) {
     console.log(error);
   }
